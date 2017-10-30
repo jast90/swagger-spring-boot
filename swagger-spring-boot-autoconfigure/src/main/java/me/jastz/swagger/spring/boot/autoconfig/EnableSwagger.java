@@ -1,7 +1,8 @@
-package me.jastz.swagger.spring.boot;
+package me.jastz.swagger.spring.boot.autoconfig;
 
 import org.springframework.context.annotation.Import;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration;
 
 import java.lang.annotation.*;
 
@@ -13,6 +14,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@Import({EnableSwagger2.class, SwaggerAutoConfiguration.class})
-public @interface EnableSwagger2Doc {
+@Import({Swagger2DocumentationConfiguration.class, SwaggerAutoConfiguration.class})
+public @interface EnableSwagger {
 }

@@ -1,4 +1,4 @@
-package me.jastz.swagger.spring.boot;
+package me.jastz.swagger.spring.boot.autoconfig;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -32,6 +32,9 @@ public class SwaggerAutoConfiguration {
 
     private final SwaggerProperties properties;
 
+    private static final String API_KEY = "api_key";
+    private static final String OAUTH2 = "oauth2";
+
     public SwaggerAutoConfiguration(SwaggerProperties properties) {
         this.properties = properties;
     }
@@ -50,17 +53,31 @@ public class SwaggerAutoConfiguration {
                 .apis(RequestHandlerSelectors.basePackage(properties.getBasePackage()))
                 .paths(Predicates.and(Predicates.not(Predicates.or(excludePath))))
                 .build()
-                .securitySchemes(newArrayList(new OAuthBuilder().name("oauth2").grantTypes(grantTypes())
-                        .scopes(scopes()).build()))
+                .securitySchemes(newArrayList(securityScheme()))
                 .securityContexts(newArrayList(oauth()))
                 .apiInfo(apiInfo())
                 ;
     }
 
+    private SecurityScheme securityScheme() {
+        if (OAUTH2.equals(properties.getScheme())) {
+            return new OAuthBuilder().name("oauth2").grantTypes(grantTypes())
+                    .scopes(scopes()).build();
+        } else if (API_KEY.equals(properties.getScheme())) {
+            return apiKey();
+        } else {
+            throw new RuntimeException(String.format("The scheme %s is not support", properties.getBasePackage()));
+        }
+    }
+
+
     private List<AuthorizationScope> scopes() {
+
         List<AuthorizationScope> authorizationScopes = Lists.newArrayList();
-        for (SwaggerProperties.Oauth2.Scope scope : properties.getOauth2().getScope()) {
-            authorizationScopes.add(new AuthorizationScope(scope.getName(), scope.getDescription()));
+        if (OAUTH2.equals(properties.getScheme())) {
+            for (SwaggerProperties.Oauth2.Scope scope : properties.getOauth2().getScope()) {
+                authorizationScopes.add(new AuthorizationScope(scope.getName(), scope.getDescription()));
+            }
         }
         return authorizationScopes;
     }
@@ -95,7 +112,7 @@ public class SwaggerAutoConfiguration {
 
     private SecurityContext oauth() {
         List<SecurityReference> auth;
-        if ("apiKey".equals(properties.getScheme())) {
+        if (API_KEY.equals(properties.getScheme())) {
             auth = apiAuth();
         } else {
             auth = oauth2Auth();

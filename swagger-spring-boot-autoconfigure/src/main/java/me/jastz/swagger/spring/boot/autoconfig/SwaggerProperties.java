@@ -1,8 +1,10 @@
-package me.jastz.swagger.spring.boot;
+package me.jastz.swagger.spring.boot.autoconfig;
 
+import com.google.common.collect.Lists;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +18,7 @@ public class SwaggerProperties {
     /**
      * 映射的url
      */
-    private String pathMapping;
+    private String pathMapping = "/";
 
     /**
      * 扫描的包
@@ -26,27 +28,27 @@ public class SwaggerProperties {
     /**
      * 排除的url
      */
-    private List<String> excludePath;
+    private List<String> excludePath = new ArrayList<>();
 
     /**
      * 文档标题
      */
-    private String title;
+    private String title = "文档标题";
 
     /**
      * 文档描述
      */
-    private String description;
+    private String description = "文档描述";
 
     /**
      * 版本号
      */
-    private String version;
+    private String version = "版本号";
 
     /**
      * 安全模式
      */
-    private String scheme;
+    private String scheme = "api_key";
 
     @NestedConfigurationProperty
     private Param param;
@@ -154,7 +156,7 @@ public class SwaggerProperties {
         private String clientId;
         private String secretId;
         private String realm;
-        private List<Scope> scope;
+        private List<Scope> scope = Lists.newArrayList();
         private GrantType grantType;
 
         public String getClientId() {

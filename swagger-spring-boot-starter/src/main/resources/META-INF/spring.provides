@@ -1,0 +1,1 @@
+provides: swagger-spring-boot-autoconfigure,springfox-swagger2,springfox-swagger-ui,swagger-ui
