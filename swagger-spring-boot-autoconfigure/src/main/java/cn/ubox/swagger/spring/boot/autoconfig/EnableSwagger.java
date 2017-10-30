@@ -1,7 +1,6 @@
-package me.jastz.swagger.spring.boot.autoconfig;
+package cn.ubox.swagger.spring.boot.autoconfig;
 
 import org.springframework.context.annotation.Import;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration;
 
 import java.lang.annotation.*;

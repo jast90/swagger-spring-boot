@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>me.jastz.swagger.spring.boot</groupId>
+    <groupId>cn.ubox.swagger.spring.boot</groupId>
     <artifactId>swagger-spring-boot</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
@@ -33,7 +33,7 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>me.jastz.swagger.spring.boot</groupId>
+                <groupId>cn.ubox.swagger.spring.boot</groupId>
                 <artifactId>swagger-spring-boot-autoconfigure</artifactId>
                 <version>${swagger-spring-boot-autoconfigure.version}</version>
             </dependency>

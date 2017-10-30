@@ -1,4 +1,4 @@
-package me.jastz.swagger.spring.boot.autoconfig;
+package cn.ubox.swagger.spring.boot.autoconfig;
 
 import com.google.common.collect.Lists;
 import org.springframework.boot.context.properties.ConfigurationProperties;
