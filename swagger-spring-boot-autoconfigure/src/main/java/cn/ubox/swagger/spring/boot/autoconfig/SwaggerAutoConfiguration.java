@@ -83,7 +83,7 @@ public class SwaggerAutoConfiguration {
     }
 
     private List<GrantType> grantTypes() {
-        String tokenUrl = properties.getGrantType().getTokenUrl(), authorizeUrl = properties.getGrantType().getAuthorizeUrl(), loginUrl = properties.getGrantType().getLoginUrl();
+        String tokenUrl = properties.getOauth2().getGrantType().getTokenUrl(), authorizeUrl = properties.getOauth2().getGrantType().getAuthorizeUrl(), loginUrl = properties.getOauth2().getGrantType().getLoginUrl();
         List<GrantType> grantTypes = new ArrayList<>();
         if ("authorization_code".equals(properties.getOauth2().getGrantType().getName())) {
             AuthorizationCodeGrant authorizationCodeGrant = new AuthorizationCodeGrant(

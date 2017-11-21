@@ -56,9 +56,6 @@ public class SwaggerProperties {
     @NestedConfigurationProperty
     private Oauth2 oauth2;
 
-    @NestedConfigurationProperty
-    private Oauth2.GrantType grantType;
-
     public String getPathMapping() {
         return pathMapping;
     }
@@ -131,7 +128,7 @@ public class SwaggerProperties {
         this.oauth2 = oauth2;
     }
 
-    public class Param {
+    public static class Param {
         private String name;
         private String type;
 
@@ -152,7 +149,7 @@ public class SwaggerProperties {
         }
     }
 
-    public class Oauth2 {
+    public static class Oauth2 {
         private String clientId;
         private String secretId;
         private String realm;
@@ -199,7 +196,7 @@ public class SwaggerProperties {
             this.grantType = grantType;
         }
 
-        public class Scope {
+        public static class Scope {
             private String name;
             private String description;
 
@@ -220,7 +217,7 @@ public class SwaggerProperties {
             }
         }
 
-        public class GrantType {
+        public static class GrantType {
             private String name;
             private String authorizeUrl;
             private String tokenUrl;
@@ -258,13 +255,5 @@ public class SwaggerProperties {
                 this.loginUrl = loginUrl;
             }
         }
-    }
-
-    public Oauth2.GrantType getGrantType() {
-        return grantType;
-    }
-
-    public void setGrantType(Oauth2.GrantType grantType) {
-        this.grantType = grantType;
     }
 }
