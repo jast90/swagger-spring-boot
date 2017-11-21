@@ -85,20 +85,20 @@ public class SwaggerAutoConfiguration {
     private List<GrantType> grantTypes() {
         String tokenUrl = properties.getGrantType().getTokenUrl(), authorizeUrl = properties.getGrantType().getAuthorizeUrl(), loginUrl = properties.getGrantType().getLoginUrl();
         List<GrantType> grantTypes = new ArrayList<>();
-        if ("authorization_code".equals(properties.getScheme())) {
+        if ("authorization_code".equals(properties.getOauth2().getGrantType().getName())) {
             AuthorizationCodeGrant authorizationCodeGrant = new AuthorizationCodeGrant(
                     new TokenRequestEndpoint(authorizeUrl, properties.getOauth2().getClientId()
                             , properties.getOauth2().getSecretId()),
                     new TokenEndpoint(tokenUrl, "access_token"));
             grantTypes.add(authorizationCodeGrant);
-        } else if ("client_credentials".equals(properties.getScheme())) {
+        } else if ("client_credentials".equals(properties.getOauth2().getGrantType().getName())) {
             ClientCredentialsGrant clientCredentialsGrant = new ClientCredentialsGrant(tokenUrl);
             grantTypes.add(clientCredentialsGrant);
-        } else if ("password".equals(properties.getScheme())) {
+        } else if ("password".equals(properties.getOauth2().getGrantType().getName())) {
             ResourceOwnerPasswordCredentialsGrant resourceOwnerPasswordCredentialsGrant =
                     new ResourceOwnerPasswordCredentialsGrant(tokenUrl);
             grantTypes.add(resourceOwnerPasswordCredentialsGrant);
-        } else if ("implicit".equals(properties.getScheme())) {
+        } else if ("implicit".equals(properties.getOauth2().getGrantType().getName())) {
             ImplicitGrant implicitGrant = new ImplicitGrant(new LoginEndpoint(tokenUrl), "access_token");
             grantTypes.add(implicitGrant);
         }
