@@ -106,7 +106,7 @@ public class SwaggerAutoConfiguration {
     }
 
     private ApiKey apiKey() {
-        return new ApiKey("mykey", "api_key", "header");
+        return new ApiKey("mykey", properties.getApiKeyName(), "header");
     }
 
 

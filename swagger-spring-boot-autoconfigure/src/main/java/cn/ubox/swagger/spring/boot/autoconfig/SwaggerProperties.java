@@ -50,6 +50,11 @@ public class SwaggerProperties {
      */
     private String scheme = "api_key";
 
+    /**
+     * header 请求参数名称
+     */
+    private String apiKeyName = "usession";
+
     @NestedConfigurationProperty
     private Param param;
 
@@ -110,6 +115,14 @@ public class SwaggerProperties {
 
     public void setScheme(String scheme) {
         this.scheme = scheme;
+    }
+
+    public String getApiKeyName() {
+        return apiKeyName;
+    }
+
+    public void setApiKeyName(String apiKeyName) {
+        this.apiKeyName = apiKeyName;
     }
 
     public Param getParam() {
