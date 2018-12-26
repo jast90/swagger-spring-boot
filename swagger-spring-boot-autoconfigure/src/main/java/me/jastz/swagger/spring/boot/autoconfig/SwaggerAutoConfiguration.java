@@ -60,13 +60,13 @@ public class SwaggerAutoConfiguration {
     }
 
     private SecurityScheme securityScheme() {
-        if (OAUTH2.equals(properties.getScheme())) {
+        if (API_KEY.equals(properties.getScheme())) {
+            return apiKey();
+        } else if (OAUTH2.equalsIgnoreCase(properties.getScheme())) {
             return new OAuthBuilder().name("oauth2").grantTypes(grantTypes())
                     .scopes(scopes()).build();
-        } else if (API_KEY.equals(properties.getScheme())) {
-            return apiKey();
         } else {
-            throw new RuntimeException(String.format("The scheme %s is not support", properties.getBasePackage()));
+            throw new IllegalArgumentException("Not support scheme.");
         }
     }
 
@@ -75,8 +75,8 @@ public class SwaggerAutoConfiguration {
 
         List<AuthorizationScope> authorizationScopes = Lists.newArrayList();
         if (OAUTH2.equals(properties.getScheme())) {
-            for (SwaggerProperties.Oauth2.Scope scope : properties.getOauth2().getScope()) {
-                authorizationScopes.add(new AuthorizationScope(scope.getName(), scope.getDescription()));
+            for (String scope : properties.getScopeList()) {
+                authorizationScopes.add(new AuthorizationScope(scope, scope));
             }
         }
         return authorizationScopes;
@@ -85,20 +85,20 @@ public class SwaggerAutoConfiguration {
     private List<GrantType> grantTypes() {
         String tokenUrl = properties.getGrantType().getTokenUrl(), authorizeUrl = properties.getGrantType().getAuthorizeUrl(), loginUrl = properties.getGrantType().getLoginUrl();
         List<GrantType> grantTypes = new ArrayList<>();
-        if ("authorization_code".equals(properties.getScheme())) {
+        if ("authorization_code".equals(properties.getGrantType().getName())) {
             AuthorizationCodeGrant authorizationCodeGrant = new AuthorizationCodeGrant(
                     new TokenRequestEndpoint(authorizeUrl, properties.getOauth2().getClientId()
                             , properties.getOauth2().getSecretId()),
                     new TokenEndpoint(tokenUrl, "access_token"));
             grantTypes.add(authorizationCodeGrant);
-        } else if ("client_credentials".equals(properties.getScheme())) {
+        } else if ("client_credentials".equals(properties.getGrantType().getName())) {
             ClientCredentialsGrant clientCredentialsGrant = new ClientCredentialsGrant(tokenUrl);
             grantTypes.add(clientCredentialsGrant);
-        } else if ("password".equals(properties.getScheme())) {
+        } else if ("password".equals(properties.getGrantType().getName())) {
             ResourceOwnerPasswordCredentialsGrant resourceOwnerPasswordCredentialsGrant =
                     new ResourceOwnerPasswordCredentialsGrant(tokenUrl);
             grantTypes.add(resourceOwnerPasswordCredentialsGrant);
-        } else if ("implicit".equals(properties.getScheme())) {
+        } else if ("implicit".equals(properties.getGrantType().getName())) {
             ImplicitGrant implicitGrant = new ImplicitGrant(new LoginEndpoint(tokenUrl), "access_token");
             grantTypes.add(implicitGrant);
         }
@@ -106,7 +106,7 @@ public class SwaggerAutoConfiguration {
     }
 
     private ApiKey apiKey() {
-        return new ApiKey("mykey", "api_key", "header");
+        return new ApiKey("mykey", properties.getParam().getName(), properties.getParam().getType());
     }
 
 

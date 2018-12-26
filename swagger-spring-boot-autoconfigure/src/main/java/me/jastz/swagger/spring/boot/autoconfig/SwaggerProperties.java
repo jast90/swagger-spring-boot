@@ -51,13 +51,15 @@ public class SwaggerProperties {
     private String scheme = "api_key";
 
     @NestedConfigurationProperty
-    private Param param;
+    private Param param = new Param();
 
     @NestedConfigurationProperty
     private Oauth2 oauth2;
 
     @NestedConfigurationProperty
     private Oauth2.GrantType grantType;
+
+    private List<String> scopeList;
 
     public String getPathMapping() {
         return pathMapping;
@@ -131,9 +133,25 @@ public class SwaggerProperties {
         this.oauth2 = oauth2;
     }
 
-    public class Param {
-        private String name;
-        private String type;
+    public Oauth2.GrantType getGrantType() {
+        return grantType;
+    }
+
+    public void setGrantType(Oauth2.GrantType grantType) {
+        this.grantType = grantType;
+    }
+
+    public List<String> getScopeList() {
+        return scopeList;
+    }
+
+    public void setScopeList(List<String> scopeList) {
+        this.scopeList = scopeList;
+    }
+
+    public static class Param {
+        private String name = "access_token";
+        private String type = "header";
 
         public String getName() {
             return name;
@@ -152,12 +170,15 @@ public class SwaggerProperties {
         }
     }
 
-    public class Oauth2 {
+    public static class Oauth2 {
         private String clientId;
         private String secretId;
         private String realm;
         private List<Scope> scope = Lists.newArrayList();
         private GrantType grantType;
+
+        public Oauth2() {
+        }
 
         public String getClientId() {
             return clientId;
@@ -199,9 +220,12 @@ public class SwaggerProperties {
             this.grantType = grantType;
         }
 
-        public class Scope {
+        public static class Scope {
             private String name;
             private String description;
+
+            public Scope() {
+            }
 
             public String getName() {
                 return name;
@@ -220,11 +244,14 @@ public class SwaggerProperties {
             }
         }
 
-        public class GrantType {
+        public static class GrantType {
             private String name;
             private String authorizeUrl;
             private String tokenUrl;
             private String loginUrl;
+
+            public GrantType() {
+            }
 
             public String getName() {
                 return name;
@@ -258,13 +285,5 @@ public class SwaggerProperties {
                 this.loginUrl = loginUrl;
             }
         }
-    }
-
-    public Oauth2.GrantType getGrantType() {
-        return grantType;
-    }
-
-    public void setGrantType(Oauth2.GrantType grantType) {
-        this.grantType = grantType;
     }
 }
